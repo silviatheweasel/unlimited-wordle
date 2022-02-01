@@ -17,13 +17,8 @@ export const Keyboard = () => {
     const dispatch = useDispatch();
 
     const updateCurrentLetter = (letter) => {
-        console.log(letter);
         dispatch(inputLetter(letter));
     };
-
-    // const delLetter = () => {
-    //     dispatch(deleteLetter());
-    // }
 
     const createRows = (data) => {
         return (
@@ -41,24 +36,24 @@ export const Keyboard = () => {
 
     
     return (
-    <div>
-        <div className="keyboardRow">
-            {createRows(keyboardRow1)}
-        </div>
-        <div className="keyboardRow">
-            {createRows(keyboardRow2)}
-        </div>
-        <div className="keyboardRow">
-            <button 
-                className="enterKey key"
-                >ENTER
-            </button>
-            {createRows(keyboardRow3)}
-            <button
-                className="deleteKey key"
-                // onClick={() => dispatch(deleteLetter())}
-                ><i className="fas fa-backspace"></i>
-            </button>
-        </div>
-    </div>)
+        <div className="keyboardContainer">
+            <div className="keyboardRow">
+                {createRows(keyboardRow1)}
+            </div>
+            <div className="keyboardRow">
+                {createRows(keyboardRow2)}
+            </div>
+            <div className="keyboardRow">
+                <button 
+                    className="enterKey key"
+                    >ENTER
+                </button>
+                {createRows(keyboardRow3)}
+                <button
+                    className="deleteKey key"
+                    // onClick={() => dispatch(deleteLetter())}
+                    ><i className="fas fa-backspace"></i>
+                </button>
+            </div>
+        </div>)
 }

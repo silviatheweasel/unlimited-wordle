@@ -3,12 +3,13 @@ import { selectAllLetters } from "../features/alphabetLetters/alphabetLettersSli
 
 export const LetterDisplayRow = ({ letterRow }) => {
 
-    return (<div>
+    return (
+    <div className="letterDisplayRow">
         {letterRow.map((letter, index) => 
-            <button
+            <div
                 className="letterDisplayBox"
                 key={"letter" + index}
-                >{letter}
-            </button>)}
+                >{letter.toUpperCase()}
+            </div>)}
     </div>)
 }

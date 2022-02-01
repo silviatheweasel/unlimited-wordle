@@ -9,7 +9,7 @@ function App() {
     <div className="app">
       <header>
         <h1>Unlimited Wordle</h1>
-        <main>
+        <main className="main">
           <WordsDisplay />
           <AlphabetLetters />
         </main>

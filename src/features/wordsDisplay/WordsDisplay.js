@@ -20,7 +20,7 @@ export const WordsDisplay = () => {
     }
 
     return (
-        <div>
+        <div className="displayContainer">
             {createLetterDisplayRows()}
         </div>)
 }

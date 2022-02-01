@@ -17,7 +17,7 @@ export const alphabetLettersSlice = createSlice({
         alphabetStatus: alphabetStatus, 
         currentWord: "",
         currentLetter: "",
-        allLetters: {0: Array(6).fill(""), 1: Array(6).fill(""), 2: Array(6).fill(""), 3: Array(6).fill(""), 4: Array(6).fill(""), 5: Array(6).fill("")}
+        allLetters: {0: Array(5).fill(""), 1: Array(5).fill(""), 2: Array(5).fill(""), 3: Array(5).fill(""), 4: Array(5).fill(""), 5: Array(5).fill("")}
     },
     reducers: {
         // inputLetter: (state, action) => ({ ...state, currentWord: state.currentWord + action.payload }),
@@ -26,12 +26,7 @@ export const alphabetLettersSlice = createSlice({
         saveCurrentLetter: (state, action) => ({ ...state, currentLetter: action.payload }),
         inputLetter: (state, action) => {
             const keys = Object.keys(state.allLetters);
-            const indexes = [];
-            keys.forEach(key => {
-                const indexFirstEmpty = state.allLetters[key].findIndex(element => !element);
-                indexes.push(indexFirstEmpty);
-                return indexes;
-            });
+            const indexes = keys.map(key => state.allLetters[key].findIndex(element => !element));
             const firstRowNotEmpty = indexes.findIndex(el => el !== -1);
             const firstIndexNotEmpty = indexes[firstRowNotEmpty];
             state.allLetters[firstRowNotEmpty][firstIndexNotEmpty] = action.payload;
