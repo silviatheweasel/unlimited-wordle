@@ -1,11 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
-import { selectCurrentWord, selectAlphabetStatus, saveCurrentLetter } from "../features/alphabetLetters/alphabetLettersSlice";
+import { selectAlphabetStatus, selectCurrentLetter, inputLetter, deleteLetter } from "../features/alphabetLetters/alphabetLettersSlice";
 
-import { Key } from "../modules/Key";
 
 export const Keyboard = () => {
     const alphabetStatus = useSelector(selectAlphabetStatus);
-
     const getKeyboardRows = (index1, index2) => {
         const alphabetStatusArray = Object.entries(alphabetStatus);
         return Object.fromEntries(alphabetStatusArray.slice(index1, index2));
@@ -14,22 +12,36 @@ export const Keyboard = () => {
     const keyboardRow2 = getKeyboardRows(10, 19);
     const keyboardRow3 = getKeyboardRows(19);
 
+    const currentLetter = useSelector(selectCurrentLetter);
+
+    const dispatch = useDispatch();
+
+    const updateCurrentLetter = (letter) => {
+        console.log(letter);
+        dispatch(inputLetter(letter));
+    };
+
+    // const delLetter = () => {
+    //     dispatch(deleteLetter());
+    // }
+
     const createRows = (data) => {
         return (
             <>
                 {Object.keys(data)
                     .map(letter => 
-                        <Key 
+                        <button
                             key={letter}
-                            letter={letter}
-                            letterStatus={alphabetStatus[letter]}
-                        />)}
+                            className="key"
+                            onClick={() => updateCurrentLetter(letter)}
+                            >{letter.toUpperCase()}
+                        </button>)}
             </>)
     }
 
     
     return (
-    <form>
+    <div>
         <div className="keyboardRow">
             {createRows(keyboardRow1)}
         </div>
@@ -44,9 +56,9 @@ export const Keyboard = () => {
             {createRows(keyboardRow3)}
             <button
                 className="deleteKey key"
-            >
-                <i className="fas fa-backspace"></i>
+                // onClick={() => dispatch(deleteLetter())}
+                ><i className="fas fa-backspace"></i>
             </button>
         </div>
-    </form>)
+    </div>)
 }

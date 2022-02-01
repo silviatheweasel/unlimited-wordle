@@ -1,26 +1,26 @@
 import { useSelector } from "react-redux";
 
-import { selectCurrentLetter } from "../alphabetLetters/alphabetLettersSlice";
+import { selectCurrentLetter, selectCurrentWord, selectAllLetters} from "../alphabetLetters/alphabetLettersSlice";
+import { LetterDisplayRow } from "../../containers/LetterDisplayRow";
 
 export const WordsDisplay = () => {
-    const rows = new Array(5).fill(0);
-    const columns = new Array(6).fill(0);
+    const boxes = new Array(36).fill(0);
 
     const currentLetter = useSelector(selectCurrentLetter);
+    const currentWord = useSelector(selectCurrentWord);
+    const allLetters = useSelector(selectAllLetters);
+
+    const createLetterDisplayRows = () => {
+        const rowIndexes = Object.keys(allLetters);
+        return rowIndexes.map(index => 
+            <LetterDisplayRow 
+                letterRow={allLetters[index]} 
+                key={"letterRow" + index}
+                />)
+    }
 
     return (
         <div>
-            {columns.map((column, index) => 
-                (<div 
-                    className="wordDisplayRow"
-                    key={"column" + index}
-                    >
-                        {rows.map((row, index) => 
-                            (<button 
-                                className="letterTile"
-                                key={"column" + index}
-                                >{currentLetter}</button>))}
-                    </div>))}
-
+            {createLetterDisplayRows()}
         </div>)
 }

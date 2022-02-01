@@ -1,3 +1,8 @@
 .App {
   text-align: center;
 }
+
+.letterDisplayBox {
+  height: 30px;
+  width: 30px;
+}
