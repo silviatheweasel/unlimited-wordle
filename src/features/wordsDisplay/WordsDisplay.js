@@ -1,26 +1,28 @@
 import { useSelector } from "react-redux";
 
-import { selectCurrentLetter } from "../alphabetLetters/alphabetLettersSlice";
+import { selectAllLetters, selectShowValidationAlert, selectShowWordCountAlert, selectAlphabetStatus } from "../alphabetLetters/alphabetLettersSlice";
+import { LetterDisplayRow } from "../../containers/LetterDisplayRow";
 
 export const WordsDisplay = () => {
-    const rows = new Array(5).fill(0);
-    const columns = new Array(6).fill(0);
+    const allLetters = useSelector(selectAllLetters);
+    const showValidationAlert = useSelector(selectShowValidationAlert);
+    const showWordCountAlert = useSelector(selectShowWordCountAlert);
+    const alphabetStatus = useSelector(selectAlphabetStatus);
 
-    const currentLetter = useSelector(selectCurrentLetter);
+    const createLetterDisplayRows = () => {
+        const rowIndexes = Object.keys(allLetters);
+        return rowIndexes.map(index => 
+            <LetterDisplayRow 
+                letterRow={allLetters[index]} 
+                key={"letterRow" + index}
+                alphabetStatus={alphabetStatus}
+                />)
+    }
 
     return (
-        <div>
-            {columns.map((column, index) => 
-                (<div 
-                    className="wordDisplayRow"
-                    key={"column" + index}
-                    >
-                        {rows.map((row, index) => 
-                            (<button 
-                                className="letterTile"
-                                key={"column" + index}
-                                >{currentLetter}</button>))}
-                    </div>))}
-
+        <div className="displayContainer">
+            {showWordCountAlert && <p>Not enough letters!</p>}
+            {showValidationAlert && <p>Not in the word list!</p>}
+            {createLetterDisplayRows()}
         </div>)
 }

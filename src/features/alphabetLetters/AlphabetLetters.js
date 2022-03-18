@@ -1,5 +1,7 @@
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 // import { selectCurrentWord, selectAlphabetStatus } from "./alphabetLettersSlice";
+
+import { selectIsValidWord, sselectIsValidWord } from "./alphabetLettersSlice";
 
 import { Keyboard } from "../../containers/Keyboard";
 

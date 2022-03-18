@@ -1,10 +1,17 @@
 import { useSelector, useDispatch } from "react-redux";
-import { selectCurrentWord, selectAlphabetStatus, saveCurrentLetter } from "../features/alphabetLetters/alphabetLettersSlice";
+import { selectAlphabetStatus, 
+        inputLetter, 
+        selectAllLetters, 
+        selectIsValidWord
+    } from "../features/alphabetLetters/alphabetLettersSlice";
+import { getLastInputIndexes } from "../utilities/getIndexes";
 
-import { Key } from "../modules/Key";
+import { handleEnter } from "../utilities/handleEnter";
+import { handleBackspace } from "../utilities/handleBackspace";
 
 export const Keyboard = () => {
     const alphabetStatus = useSelector(selectAlphabetStatus);
+    const isValidWord = useSelector(selectIsValidWord);
 
     const getKeyboardRows = (index1, index2) => {
         const alphabetStatusArray = Object.entries(alphabetStatus);
@@ -14,39 +21,51 @@ export const Keyboard = () => {
     const keyboardRow2 = getKeyboardRows(10, 19);
     const keyboardRow3 = getKeyboardRows(19);
 
+    const allLetters = useSelector(selectAllLetters);
+
+    const lastInputRow = getLastInputIndexes(allLetters)[0];
+
+    const dispatch = useDispatch();
+
+    const updateCurrentLetter = (letter) => {
+        dispatch(inputLetter(letter)); 
+    };
+
     const createRows = (data) => {
         return (
             <>
                 {Object.keys(data)
                     .map(letter => 
-                        <Key 
+                        <button
                             key={letter}
-                            letter={letter}
-                            letterStatus={alphabetStatus[letter]}
-                        />)}
+                            className="key"
+                            onClick={() => updateCurrentLetter(letter)}
+                            >{letter.toUpperCase()}
+                        </button>)}
             </>)
     }
 
     
     return (
-    <form>
-        <div className="keyboardRow">
-            {createRows(keyboardRow1)}
-        </div>
-        <div className="keyboardRow">
-            {createRows(keyboardRow2)}
-        </div>
-        <div className="keyboardRow">
-            <button 
-                className="enterKey key"
-                >ENTER
-            </button>
-            {createRows(keyboardRow3)}
-            <button
-                className="deleteKey key"
-            >
-                <i className="fas fa-backspace"></i>
-            </button>
-        </div>
-    </form>)
+        <div className="keyboardContainer">
+            <div className="keyboardRow">
+                {createRows(keyboardRow1)}
+            </div>
+            <div className="keyboardRow">
+                {createRows(keyboardRow2)}
+            </div>
+            <div className="keyboardRow">
+                <button 
+                    className="enterKey key"
+                    onClick={() => handleEnter(allLetters[lastInputRow], dispatch)}
+                    >ENTER
+                </button>
+                {createRows(keyboardRow3)}
+                <button
+                    className="deleteKey key"
+                    onClick={() => handleBackspace(dispatch, isValidWord[lastInputRow])}
+                    ><i className="fas fa-backspace"></i>
+                </button>
+            </div>
+        </div>)
 }
