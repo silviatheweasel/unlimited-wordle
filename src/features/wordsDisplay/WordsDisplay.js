@@ -1,14 +1,13 @@
 import { useSelector } from "react-redux";
 
-import { selectCurrentLetter, selectCurrentWord, selectAllLetters} from "../alphabetLetters/alphabetLettersSlice";
+import { selectAllLetters, selectShowValidationAlert, selectShowWordCountAlert, selectAlphabetStatus } from "../alphabetLetters/alphabetLettersSlice";
 import { LetterDisplayRow } from "../../containers/LetterDisplayRow";
 
 export const WordsDisplay = () => {
-    const boxes = new Array(36).fill(0);
-
-    const currentLetter = useSelector(selectCurrentLetter);
-    const currentWord = useSelector(selectCurrentWord);
     const allLetters = useSelector(selectAllLetters);
+    const showValidationAlert = useSelector(selectShowValidationAlert);
+    const showWordCountAlert = useSelector(selectShowWordCountAlert);
+    const alphabetStatus = useSelector(selectAlphabetStatus);
 
     const createLetterDisplayRows = () => {
         const rowIndexes = Object.keys(allLetters);
@@ -16,11 +15,14 @@ export const WordsDisplay = () => {
             <LetterDisplayRow 
                 letterRow={allLetters[index]} 
                 key={"letterRow" + index}
+                alphabetStatus={alphabetStatus}
                 />)
     }
 
     return (
         <div className="displayContainer">
+            {showWordCountAlert && <p>Not enough letters!</p>}
+            {showValidationAlert && <p>Not in the word list!</p>}
             {createLetterDisplayRows()}
         </div>)
 }

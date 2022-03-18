@@ -7,7 +7,6 @@ export const getKeyBoardInitialState = (alphabet) => {
             isYellow: false,
             isGreen: false,
             isGrey: false,
-            inCurrentWord: false
         }
     });
     return initialState;
