@@ -1,10 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { alphabet, getKeyBoardInitialState } from "../../utilities/alphabet";
+import { alphabet } from "../../utilities/alphabet";
 import { getFirstEmptyIndexes, getLastInputIndexes } from "../../utilities/getIndexes";
 import { api } from "../../env/api";
-
-const alphabetStatus = getKeyBoardInitialState(alphabet);
 
 const getAsyncData = async (str) => {
     const url = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/";
@@ -33,7 +31,6 @@ export const checkIsLetter = createAsyncThunk(
 export const alphabetLettersSlice = createSlice({
     name: "alphabetLetters",
     initialState: {
-        alphabetStatus: alphabetStatus,
         currentWord: {
             showWordCountAlert: false,
             showValidationAlert: false,
@@ -44,6 +41,7 @@ export const alphabetLettersSlice = createSlice({
             2: Array(5).fill({letter: "", color: ""}), 
             3: Array(5).fill({letter: "", color: ""}),
             4: Array(5).fill({letter: "", color: ""}),
+            5: Array(5).fill({letter: "", color: ""})
         },
         isValidWord: { 0: false, 1: false, 2: false, 3: false, 4: false }
     },
@@ -98,8 +96,6 @@ export const alphabetLettersSlice = createSlice({
             })
     }
 });
-
-export const selectAlphabetStatus = (state) => state.alphabetLetters.alphabetStatus;
 
 export const selectLettersInRows = (state) => state.alphabetLetters.lettersInRows;
 

@@ -1,25 +1,21 @@
 import { useSelector, useDispatch } from "react-redux";
-import { selectAlphabetStatus, 
+import { 
         inputLetter, 
         selectLettersInRows, 
         selectIsValidWord
     } from "../features/alphabetLetters/alphabetLettersSlice";
 import { getLastInputIndexes } from "../utilities/getIndexes";
+import { alphabet } from "../utilities/alphabet";
 
 import { handleEnter } from "../utilities/handleEnter";
 import { handleBackspace } from "../utilities/handleBackspace";
 
 export const Keyboard = () => {
-    const alphabetStatus = useSelector(selectAlphabetStatus);
     const isValidWord = useSelector(selectIsValidWord);
 
-    const getKeyboardRows = (index1, index2) => {
-        const alphabetStatusArray = Object.entries(alphabetStatus);
-        return Object.fromEntries(alphabetStatusArray.slice(index1, index2));
-    }
-    const keyboardRow1 = getKeyboardRows(0, 10);
-    const keyboardRow2 = getKeyboardRows(10, 19);
-    const keyboardRow3 = getKeyboardRows(19);
+    const keyboardRow1 = alphabet.slice(0, 10);
+    const keyboardRow2 = alphabet.slice(10, 19);
+    const keyboardRow3 = alphabet.slice(19);
 
     const lettersInRows = useSelector(selectLettersInRows);
 

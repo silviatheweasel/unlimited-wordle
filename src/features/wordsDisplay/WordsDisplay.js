@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { selectLettersInRows, selectShowValidationAlert, selectShowWordCountAlert, selectAlphabetStatus, selectIsValidWord } from "../alphabetLetters/alphabetLettersSlice";
+import { selectLettersInRows, selectShowValidationAlert, selectShowWordCountAlert, selectIsValidWord } from "../alphabetLetters/alphabetLettersSlice";
 import { LetterDisplayRow } from "../../containers/LetterDisplayRow";
 import { getLastInputIndexes } from "../../utilities/getIndexes";
 
@@ -8,7 +8,6 @@ export const WordsDisplay = () => {
     const lettersInRows = useSelector(selectLettersInRows);
     const showValidationAlert = useSelector(selectShowValidationAlert);
     const showWordCountAlert = useSelector(selectShowWordCountAlert);
-    const alphabetStatus = useSelector(selectAlphabetStatus);
     const isValidWord = useSelector(selectIsValidWord);
 
     const lastInputRow = getLastInputIndexes(lettersInRows)[0];
