@@ -3,11 +3,7 @@ export const alphabet = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", 
 export const getKeyBoardInitialState = (alphabet) => {
     let initialState = {};
     alphabet.forEach(letter => {
-        initialState[letter] = {
-            isYellow: false,
-            isGreen: false,
-            isGrey: false,
-        }
+        initialState[letter] = "";
     });
     return initialState;
 }

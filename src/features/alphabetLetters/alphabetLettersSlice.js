@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { alphabet } from "../../utilities/alphabet";
+import { alphabet, getKeyBoardInitialState } from "../../utilities/alphabet";
 import { getFirstEmptyIndexes, getLastInputIndexes } from "../../utilities/getIndexes";
 import { api } from "../../env/api";
 
@@ -31,6 +31,7 @@ export const checkIsLetter = createAsyncThunk(
 export const alphabetLettersSlice = createSlice({
     name: "alphabetLetters",
     initialState: {
+        keyboardLetters: getKeyBoardInitialState(alphabet),
         currentWord: {
             showWordCountAlert: false,
             showValidationAlert: false,
@@ -76,14 +77,16 @@ export const alphabetLettersSlice = createSlice({
             const [lastInputRow, lastInputIndex] = getLastInputIndexes(state.lettersInRows);
             currentRowLetters.forEach((letter, index) => {
                 const targetIndex = targetWord.indexOf(letter);
-                console.log(state.lettersInRows[lastInputRow][index]);
                 if (targetIndex === -1) {
                     state.lettersInRows[lastInputRow][index].color = "gray";
+                    state.keyboardLetters[letter] = "gray";
                 } else {
                     if (targetIndex === index) {
                         state.lettersInRows[lastInputRow][index].color = "green";
+                        state.keyboardLetters[letter] = "green";
                     } else {
                         state.lettersInRows[lastInputRow][index].color = "yellow";
+                        state.keyboardLetters[letter] = "yellow";
                     }
                 }
             })
@@ -97,6 +100,7 @@ export const alphabetLettersSlice = createSlice({
     }
 });
 
+
 export const selectLettersInRows = (state) => state.alphabetLetters.lettersInRows;
 
 export const selectShowValidationAlert = (state) => state.alphabetLetters.currentWord.showValidationAlert;
@@ -105,8 +109,10 @@ export const selectShowWordCountAlert = (state) => state.alphabetLetters.current
 
 export const selectIsValidWord = (state) => state.alphabetLetters.isValidWord;
 
+export const selectKeyboardLetters = (state) => state.alphabetLetters.keyboardLetters;
+
 export const 
-{ inputLetter, 
+{   inputLetter, 
     deleteLetter, 
     checkIfEnoughLetters, 
     hideValidityAlert, 
