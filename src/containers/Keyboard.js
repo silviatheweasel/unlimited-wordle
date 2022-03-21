@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { selectAlphabetStatus, 
         inputLetter, 
-        selectAllLetters, 
+        selectLettersInRows, 
         selectIsValidWord
     } from "../features/alphabetLetters/alphabetLettersSlice";
 import { getLastInputIndexes } from "../utilities/getIndexes";
@@ -21,9 +21,9 @@ export const Keyboard = () => {
     const keyboardRow2 = getKeyboardRows(10, 19);
     const keyboardRow3 = getKeyboardRows(19);
 
-    const allLetters = useSelector(selectAllLetters);
+    const lettersInRows = useSelector(selectLettersInRows);
 
-    const lastInputRow = getLastInputIndexes(allLetters)[0];
+    const lastInputRow = getLastInputIndexes(lettersInRows)[0];
 
     const dispatch = useDispatch();
 
@@ -57,7 +57,7 @@ export const Keyboard = () => {
             <div className="keyboardRow">
                 <button 
                     className="enterKey key"
-                    onClick={() => handleEnter(allLetters[lastInputRow], dispatch)}
+                    onClick={() => handleEnter(lettersInRows[lastInputRow], dispatch)}
                     >ENTER
                 </button>
                 {createRows(keyboardRow3)}

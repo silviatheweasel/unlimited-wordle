@@ -1,14 +1,14 @@
-export const getFirstEmptyIndexes = (allLetters) => {
-    const keys = Object.keys(allLetters);
-    const firstEmptyElIndexArr = keys.map(key => allLetters[key].findIndex(element => !element));
+export const getFirstEmptyIndexes = (lettersInRows) => {
+    const keys = Object.keys(lettersInRows);
+    const firstEmptyElIndexArr = keys.map(key => lettersInRows[key].findIndex(element => !element.letter));
     const firstRowEmpty = firstEmptyElIndexArr.findIndex(el => el !== -1);
     const firstIndexEmpty = firstEmptyElIndexArr[firstRowEmpty];
     return [firstRowEmpty, firstIndexEmpty];
 }
 
-export const getLastInputIndexes = (allLetters) => {
-    const keys = Object.keys(allLetters);
-    const firstEmptyElIndexArr = keys.map(key => allLetters[key].findIndex(element => !element));
+export const getLastInputIndexes = (lettersInRows) => {
+    const keys = Object.keys(lettersInRows);
+    const firstEmptyElIndexArr = keys.map(key => lettersInRows[key].findIndex(element => !element.letter));
     //find the index of the first empty string in the first row that has empty strings
     const firstEmptyStrIndex = firstEmptyElIndexArr.find(index => index !== -1);
     const firstRowEmpty = firstEmptyElIndexArr.findIndex(el => el !== -1);

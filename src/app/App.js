@@ -8,7 +8,7 @@ import { WordsDisplay } from "../features/wordsDisplay/WordsDisplay";
 import { alphabet } from "../utilities/alphabet";
 import { 
   inputLetter, 
-  selectAllLetters, 
+  selectLettersInRows, 
   selectIsValidWord 
 } from "../features/alphabetLetters/alphabetLettersSlice";
 import { getLastInputIndexes } from "../utilities/getIndexes";
@@ -17,20 +17,21 @@ import { handleBackspace } from "../utilities/handleBackspace";
 
 function App() {
   const dispatch = useDispatch();
-  const allLetters = useSelector(selectAllLetters);
-  const lastInputRow = getLastInputIndexes(allLetters)[0];
+  const lettersInRows = useSelector(selectLettersInRows);
+  const lastInputRow = getLastInputIndexes(lettersInRows)[0];
   const isValidWord = useSelector(selectIsValidWord);
 
   const handleKeyDown = useCallback(
     (e) => {
+      const letterArr = lettersInRows[lastInputRow].map(letterObj => letterObj.letter);
       if (e.key === "Enter") {
-        handleEnter(allLetters[lastInputRow], dispatch);
+        handleEnter(letterArr, dispatch);
       } else if (alphabet.indexOf(e.key.toLowerCase()) !== -1) {
         dispatch(inputLetter(e.key.toLowerCase())); 
       } else if (e.key === "Backspace") {
         handleBackspace(dispatch, isValidWord[lastInputRow]);
       }
-    }, [allLetters, dispatch, isValidWord, lastInputRow]
+    }, [lettersInRows, dispatch, isValidWord, lastInputRow]
   )
 
   useEffect(() => {
@@ -39,7 +40,15 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown)
     }
-  }, [allLetters, dispatch, isValidWord, handleKeyDown]);
+  }, [lettersInRows, dispatch, isValidWord, handleKeyDown]);
+
+  // useEffect(() => {
+  //   if (isValidWord[lastInputRow]) {
+  //     const currentRow = document.getElementById("letterRow" + lastInputRow);
+  //     const letterDisplayBoxes = currentRow.getElementsByClassName("letterDisplayBox");
+
+  //   }
+  // }, [lastInputRow, dispatch]);
 
   return (
     <div 

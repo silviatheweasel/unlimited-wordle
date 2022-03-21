@@ -38,24 +38,30 @@ export const alphabetLettersSlice = createSlice({
             showWordCountAlert: false,
             showValidationAlert: false,
         },
-        allLetters: { 0: Array(5).fill(""), 1: Array(5).fill(""), 2: Array(5).fill(""), 3: Array(5).fill(""), 4: Array(5).fill(""), 5: Array(5).fill("") },
+        lettersInRows: { 
+            0: Array(5).fill({letter: "", color: ""}),
+            1: Array(5).fill({letter: "", color: ""}),
+            2: Array(5).fill({letter: "", color: ""}), 
+            3: Array(5).fill({letter: "", color: ""}),
+            4: Array(5).fill({letter: "", color: ""}),
+        },
         isValidWord: { 0: false, 1: false, 2: false, 3: false, 4: false }
     },
     reducers: {
         inputLetter: (state, action) => {
-            const [lastInputRow, lastInputIndex] = getLastInputIndexes(state.allLetters);
-            const [firstRowEmpty, firstIndexEmpty] = getFirstEmptyIndexes(state.allLetters);
+            const [lastInputRow, lastInputIndex] = getLastInputIndexes(state.lettersInRows);
+            const [firstRowEmpty, firstIndexEmpty] = getFirstEmptyIndexes(state.lettersInRows);
             if (lastInputIndex < 4) {
-                state.allLetters[lastInputRow][lastInputIndex + 1] = action.payload;
+                state.lettersInRows[lastInputRow][lastInputIndex + 1].letter = action.payload;
             } else if (lastInputIndex === 4) {
                 if (state.isValidWord[lastInputRow]) {
-                    state.allLetters[firstRowEmpty][firstIndexEmpty] = action.payload;
+                    state.lettersInRows[firstRowEmpty][firstIndexEmpty].letter = action.payload;
                 }
             }
         },
         deleteLetter: (state) => {
-            const [lastInputRow, lastInputIndex] = getLastInputIndexes(state.allLetters);
-            state.allLetters[lastInputRow][lastInputIndex] = "";
+            const [lastInputRow, lastInputIndex] = getLastInputIndexes(state.lettersInRows);
+            state.lettersInRows[lastInputRow][lastInputIndex].letter = "";
         },
         checkIfEnoughLetters: (state) => {
             state.currentWord.showWordCountAlert = !state.currentWord.showWordCountAlert;
@@ -64,23 +70,22 @@ export const alphabetLettersSlice = createSlice({
             state.currentWord.showValidationAlert = action.payload;
         },
         checkIsValidWord: (state, action) => {
-            const lastInputRow = getLastInputIndexes(state.allLetters)[0];
+            const lastInputRow = getLastInputIndexes(state.lettersInRows)[0];
             state.isValidWord[lastInputRow] = action.payload;
         },
         matchLetters: (state, action) => {
             const { currentRowLetters, targetWord } = action.payload;
+            const [lastInputRow, lastInputIndex] = getLastInputIndexes(state.lettersInRows);
             currentRowLetters.forEach((letter, index) => {
                 const targetIndex = targetWord.indexOf(letter);
+                console.log(state.lettersInRows[lastInputRow][index]);
                 if (targetIndex === -1) {
-                    state.alphabetStatus[letter].isGrey = true;
-                    console.log(letter, "grey");
+                    state.lettersInRows[lastInputRow][index].color = "gray";
                 } else {
                     if (targetIndex === index) {
-                        state.alphabetStatus[letter].isGreen = true;
-                        console.log(letter, "green");
+                        state.lettersInRows[lastInputRow][index].color = "green";
                     } else {
-                        state.alphabetStatus[letter].isYellow = true;
-                        console.log(letter, "yellow");
+                        state.lettersInRows[lastInputRow][index].color = "yellow";
                     }
                 }
             })
@@ -96,7 +101,7 @@ export const alphabetLettersSlice = createSlice({
 
 export const selectAlphabetStatus = (state) => state.alphabetLetters.alphabetStatus;
 
-export const selectAllLetters = (state) => state.alphabetLetters.allLetters;
+export const selectLettersInRows = (state) => state.alphabetLetters.lettersInRows;
 
 export const selectShowValidationAlert = (state) => state.alphabetLetters.currentWord.showValidationAlert;
 
@@ -105,7 +110,7 @@ export const selectShowWordCountAlert = (state) => state.alphabetLetters.current
 export const selectIsValidWord = (state) => state.alphabetLetters.isValidWord;
 
 export const 
-  { inputLetter, 
+{ inputLetter, 
     deleteLetter, 
     checkIfEnoughLetters, 
     hideValidityAlert, 

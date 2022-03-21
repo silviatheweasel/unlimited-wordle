@@ -1,21 +1,24 @@
 import { useSelector } from "react-redux";
 
-import { selectAllLetters, selectShowValidationAlert, selectShowWordCountAlert, selectAlphabetStatus } from "../alphabetLetters/alphabetLettersSlice";
+import { selectLettersInRows, selectShowValidationAlert, selectShowWordCountAlert, selectAlphabetStatus, selectIsValidWord } from "../alphabetLetters/alphabetLettersSlice";
 import { LetterDisplayRow } from "../../containers/LetterDisplayRow";
+import { getLastInputIndexes } from "../../utilities/getIndexes";
 
 export const WordsDisplay = () => {
-    const allLetters = useSelector(selectAllLetters);
+    const lettersInRows = useSelector(selectLettersInRows);
     const showValidationAlert = useSelector(selectShowValidationAlert);
     const showWordCountAlert = useSelector(selectShowWordCountAlert);
     const alphabetStatus = useSelector(selectAlphabetStatus);
+    const isValidWord = useSelector(selectIsValidWord);
+
+    const lastInputRow = getLastInputIndexes(lettersInRows)[0];
 
     const createLetterDisplayRows = () => {
-        const rowIndexes = Object.keys(allLetters);
+        const rowIndexes = Object.keys(lettersInRows);
         return rowIndexes.map(index => 
             <LetterDisplayRow 
-                letterRow={allLetters[index]} 
+                letterRow={lettersInRows[index]} 
                 key={"letterRow" + index}
-                alphabetStatus={alphabetStatus}
                 />)
     }
 
